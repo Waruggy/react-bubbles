@@ -3,6 +3,7 @@ import axios from 'axios';
 
 const Login = (props) => {
   
+  const [creds, setCreds] = useState({username: "", password: ""});
   const handleChange = event => {
       setCreds({...creds, [event.target.name]: event.target.value});
   };
