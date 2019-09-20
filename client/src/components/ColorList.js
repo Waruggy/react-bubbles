@@ -18,28 +18,27 @@ const ColorList = ({ colors, updateColors }) => {
 
   const saveEdit = e => {
     e.preventDefault();
-    axiosWithAuth()
-      .put('http://localhost/api/colors/:id', colorToEdit)
-      .then(res => {
-	   updateColors(
-        colors.map(color => {
-          if (color.id === colorToEdit.id) return res.data
-          else return color
-        })
-      )
-      setEditing(false)
-      setColorToEdit(initialColor)
+    axiosWithAuth().put(`http://localhost:5000/api/colors/${colorToEdit.id}`, colorToEdit)
+    .then(res => {
+      axiosWithAuth().get('http://localhost:5000/api/colors')
+      .then(res => {updateColors(res.data);
+      })
+      .catch(err => console.log(err.response));
+      console.log(res);
     })
-    .catch(err => console.log(err))
+    .catch(err => console.log(err.response));
   };
 
   const deleteColor = color => {
-   axiosWithAuth()
-    .delete(`http://localhost:5000/api/colors/123`)
+    axiosWithAuth().delete(`http://localhost:5000/api/colors/${color.id}`)
     .then(res => {
-      updateColors(colors.filter(colorCheck => colorCheck.id !== res.data)) 
+      console.log(res);
+      axiosWithAuth().get('http://localhost:5000/api/colors')
+      .then(res => {updateColors(res.data);
+      })
+      .catch(err => console.log(err.response));
     })
-    .catch(err => console.log(err))
+    .catch(err => console.log(err.response));
   };
 
   return (
